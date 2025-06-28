@@ -72,8 +72,7 @@ const maxPrecioCategoria = Math.max(...preciosCategoria);
     <div id="filters-overlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-40"></div>
 
     <!-- Modal de filtros -->
-    <aside id="filters-modal" class="fixed left-0 top-0 h-full w-80 bg-white shadow-xl z-50 transform -translate-x-full transition-transform duration-300 ease-in-out">
-      <div class="flex flex-col h-full">
+<aside id="filters-modal" class="fixed left-0 top-0 h-screen w-80 bg-white shadow-xl z-50 transform -translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto">      <div class="flex flex-col h-full">
         <div class="flex justify-between items-center p-6 border-b">
           <h2 class="text-xl font-bold">Filtros</h2>
           <button id="close-filters" class="text-gray-500 hover:text-gray-700">
