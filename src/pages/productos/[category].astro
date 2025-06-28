@@ -1,7 +1,7 @@
 ---
 import "../../styles/global.css";
 import Layout from "../../layouts/Layout.astro";
-import GridProducto from "../../components/GridProducto.astro";
+import GridProducto from "../../components/producto/GridProducto.astro";
 import productos from "../../../public/data/productos.json";
 
 
@@ -386,6 +386,6 @@ const maxPrecioCategoria = Math.max(...preciosCategoria);
 `} />
 
 <!-- 2. Cargar el script principal de filtros que usará esas variables -->
-<script type="module" src="/src/scripts/filtros.js"></script>
+<script type="module" src="/public/scripts/filtros.js"></script>
 
 </Layout>

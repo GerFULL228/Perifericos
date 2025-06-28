@@ -1,7 +1,7 @@
 ---
 // src/components/cart/CartItem.astro
 const { product } = Astro.props;
-const { updateQuantity, removeFromCart} = await import('../../scripts/cart');
+const { updateQuantity, removeFromCart} = await import('../../../public/scripts/cart');
 ---
 
 <div class="flex items-center py-4 border-b border-gray-700">
