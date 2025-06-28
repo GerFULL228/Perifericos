@@ -1,0 +1,57 @@
+---
+// src/components/cart/CartDrawer.astro
+import CartItem from './CartItem.astro';
+import { cartItems, closeCart, cartTotal } from '../../scripts/cart.js';
+// Make sure '../../scripts/cart.js' exists and exports 'cartItems', 'closeCart', and 'cartTotal'
+---
+
+<div id="cart-drawer" class="fixed inset-y-0 right-0 w-full sm:w-96 bg-gray-900 text-white shadow-xl transform translate-x-full transition-transform z-50">
+  <div class="flex flex-col h-full">
+    <div class="flex items-center justify-between p-4 border-b border-gray-800">
+      <h2 class="text-xl font-bold">Tu carrito ({cartItems().length})</h2>
+      <button onclick="closeCart()" class="text-gray-400 hover:text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    
+    <div class="flex-grow overflow-y-auto p-4">
+      {cartItems().length > 0 ? (
+        <div class="space-y-4">
+          {cartItems().map((item: any) => (
+            <CartItem product={item} />
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-12">
+          <p class="text-gray-400 mb-4">Tu carrito está vacío</p>
+          <a 
+            href="/productos" 
+            class="inline-block px-6 py-2 bg-purple-600 hover:bg-purple-700 rounded-md text-white"
+            onclick="closeCart()"
+          >
+            Ver productos
+          </a>
+        </div>
+      )}
+    </div>
+    
+    <div class="p-4 border-t border-gray-800">
+      <div class="flex justify-between mb-4">
+        <span class="text-gray-400">Total</span>
+        <span class="text-xl font-bold text-purple-400">{cartTotal()} €</span>
+      </div>
+      <a 
+        href="/carrito" 
+        class="block w-full text-center px-6 py-3 bg-purple-600 hover:bg-purple-700 rounded-md text-white"
+        onclick="closeCart()"
+      >
+        Ver carrito
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Abrir/cerrar el

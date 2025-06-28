@@ -1,0 +1,57 @@
+---
+// src/components/product/ProductDetails.astro
+import Button from '../ui/Button.astro';
+import { addToCart }  from '../../scripts/cart';
+
+const { product } = Astro.props;
+---
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div class="bg-gray-800 rounded-lg overflow-hidden">
+    <img src={product.image} alt={product.name} class="w-full h-auto object-cover" />
+  </div>
+  
+  <div class="space-y-6">
+    <div>
+      <h1 class="text-3xl font-bold text-white">{product.name}</h1>
+      <div class="flex items-center mt-2">
+        <span class="text-2xl font-bold text-purple-400">{product.price} €</span>
+        {product.originalPrice && (
+          <span class="text-gray-500 text-lg line-through ml-3">{product.originalPrice} €</span>
+        )}
+      </div>
+    </div>
+    
+    <div class="prose prose-invert max-w-none text-gray-300">
+      <p>{product.description}</p>
+      
+      <h3 class="text-white">Características</h3>
+      <ul>
+        {product.features.map((feature: string) => (
+          <li>{feature}</li>
+        ))}
+      </ul>
+    </div>
+    
+    <div class="flex space-x-4">
+      <Button 
+        variant="primary" 
+        onclick={`addToCart('${product.id}', 1)`}
+      >
+        Añadir al carrito
+      </Button>
+      <Button variant="secondary">
+        Comprar ahora
+      </Button>
+    </div>
+    
+    <div class="border-t border-gray-700 pt-4">
+      <div class="flex items-center space-x-2 text-gray-400">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+        </svg>
+        <span>Envío gratuito en pedidos superiores a 50€</span>
+      </div>
+    </div>
+  </div>
+</div>

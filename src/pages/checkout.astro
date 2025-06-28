@@ -1,0 +1,20 @@
+---
+// src/pages/checkout.astro
+import '../styles/global.css';
+import CheckoutLayout from '../layouts/CheckoutLayout.astro';
+import CheckoutForm from '../components/forms/CheckoutForm.astro';
+import CartSummary from '../components/cart/CartSummary.astro';
+---
+
+<CheckoutLayout>
+  <CheckoutForm slot="form" />
+  
+  <div slot="summary">
+    <CartSummary />
+    <div class="mt-6 p-4 bg-gray-800 rounded-lg">
+      <h3 class="text-lg font-semibold text-white mb-4">Información de envío</h3>
+      <p class="text-gray-400">Los pedidos se envían en 24-48 horas laborables.</p>
+      <p class="text-gray-400 mt-2">Envío gratuito para pedidos superiores a 50€.</p>
+    </div>
+  </div>
+</CheckoutLayout>

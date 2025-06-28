@@ -1,0 +1,87 @@
+---
+const categorias = ['Teclados', 'Mouse', 'Monitores', 'Sillas Gamer', 'Auriculares'];
+
+function slugify(str:string) {
+  return str
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase().replace(/\s+/g, '-');
+}
+---
+
+<footer class="bg-gray-900 text-white pt-12 pb-6">
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <!-- Logo y descripción -->
+      <div class="md:col-span-2">
+        <div class="flex items-center mb-4">
+          <lottie-player src="https://assets1.lottiefiles.com/packages/lf20_5tkzkblw.json" background="transparent" speed="1" style="width: 40px; height: 40px;" loop autoplay></lottie-player>
+          <span class="text-2xl font-bold ml-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">GamerTech</span>
+        </div>
+        <p class="text-gray-400 mb-4">Los mejores periféricos gaming para profesionales y entusiastas. Calidad premium al mejor precio.</p>
+        <div class="flex space-x-4">
+          <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors">
+            <i class="fab fa-discord"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Categorías -->
+      <div>
+        <h4 class="text-lg font-semibold mb-4 pb-2 border-b border-gray-700">Categorías</h4>
+        <ul class="space-y-2">
+          {categorias.map(cat => (
+            <li>
+              <a 
+                href={`/productos/${slugify(cat)}`} 
+                class="text-gray-400 hover:text-blue-400 transition-colors flex items-center"
+              >
+                <i class="fas fa-chevron-right text-xs mr-2 text-blue-600"></i> {cat}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Contacto -->
+      <div>
+        <h4 class="text-lg font-semibold mb-4 pb-2 border-b border-gray-700">Contacto</h4>
+        <ul class="space-y-3 text-gray-400">
+          <li class="flex items-start">
+            <i class="fas fa-map-marker-alt mt-1 mr-3 text-blue-600"></i>
+            <span>Av. Tecnología 123, Lima, Perú</span>
+          </li>
+          <li class="flex items-center">
+            <i class="fas fa-envelope mr-3 text-blue-600"></i>
+            <span>contacto@gamertech.com</span>
+          </li>
+          <li class="flex items-center">
+            <i class="fas fa-phone-alt mr-3 text-blue-600"></i>
+            <span>+51 987 654 321</span>
+          </li>
+          <li class="flex items-center">
+            <i class="fas fa-clock mr-3 text-blue-600"></i>
+            <span>Lun-Vie: 9am - 6pm</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-gray-800 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center">
+      <p class="text-gray-500 text-sm">© 2023 GamerTech. Todos los derechos reservados.</p>
+      <div class="flex space-x-4 mt-4 md:mt-0">
+        <a href="#" class="text-gray-500 hover:text-blue-400 text-sm">Términos y condiciones</a>
+        <a href="#" class="text-gray-500 hover:text-blue-400 text-sm">Política de privacidad</a>
+        <a href="#" class="text-gray-500 hover:text-blue-400 text-sm">Garantías</a>
+      </div>
+    </div>
+  </div>
+</footer>

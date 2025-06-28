@@ -1,0 +1,32 @@
+---
+// src/layouts/CheckoutLayout.astro
+import BaseLayout from './Layout.astro';
+// Make sure that BaseLayout.astro exists in the same directory as this file.
+// If it does not, update the path below to the correct location, for example:
+// import BaseLayout from '../components/BaseLayout.astro';
+import { cartCount } from '../scripts/cart.js';
+import Layout from './Layout.astro';
+
+// Redirigir si el carrito está vacío
+if (import.meta.env.PROD && cartCount() === 0) {
+  return Response.redirect(new URL('/productos', Astro.request.url), 302);
+}
+---
+
+<Layout title="Finalizar compra | TechPeripherals" description="Completa tu pedido en TechPeripherals">
+  <div class="container mx-auto px-4 py-8 max-w-4xl">
+    <h1 class="text-3xl font-bold text-white mb-8">Finalizar compra</h1>
+    
+    <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 p-6">
+        <div class="lg:border-r lg:border-gray-700 lg:pr-8">
+          <slot name="form" />
+        </div>
+        
+        <div>
+          <slot name="summary" />
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
