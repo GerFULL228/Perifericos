@@ -353,7 +353,13 @@ const maxPrecioCategoria = Math.max(...preciosCategoria);
                           <span class="block text-xs text-green-600">Envío gratis</span>
                         )}
                       </div>
-                      <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                      <button 
+              onclick={`cart.add({
+              id: ${producto.id},
+               title: '${producto.title.replace(/'/g, "\\'")}',
+                 price: ${producto.price},
+                image: '${producto.image.replace(/'/g, "\\'")}'
+                }, 1)`} class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
                         <i class="fas fa-cart-plus mr-1"></i> Añadir al carrito
                       </button>
                     </div>
@@ -396,5 +402,5 @@ const maxPrecioCategoria = Math.max(...preciosCategoria);
 
 <!-- 2. Cargar el script principal de filtros que usará esas variables -->
 <script type="module" src="/scripts/filtros.js"></script>
-
+<script type="module" src="/scripts/cart.js"></script>
 </Layout>

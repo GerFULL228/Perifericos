@@ -65,9 +65,11 @@
       </div>
       <div class="space-y-3">
         <button
-          onclick="alert('Funcionalidad de checkout pendiente'); cart.close();"
+          id="drawer-checkout-btn"
+          onclick="proceedToCheckoutFromDrawer()"
           class="w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-md text-white transition-colors font-medium"
         >
+          <i class="fas fa-credit-card mr-2"></i>
           Proceder al pago
         </button>
         <a
@@ -87,6 +89,29 @@
   
   // Asegurar que el carrito esté disponible globalmente
   window.cart = cart;
+  
+  // Función para proceder al checkout desde el drawer
+  window.proceedToCheckoutFromDrawer = function() {
+    // Verificar que hay productos en el carrito
+    if (cart.count() === 0) {
+      alert('Tu carrito está vacío. Agrega algunos productos antes de continuar.');
+      return;
+    }
+    
+    // Mostrar mensaje de carga
+    const checkoutBtn = document.querySelector('#drawer-checkout-btn');
+    if (checkoutBtn) {
+      checkoutBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Redirigiendo...';
+      checkoutBtn.disabled = true;
+    }
+    
+    // Redirigir a la página de checkout después de mostrar el loading
+    setTimeout(() => {
+      // Cerrar el drawer justo antes de redirigir
+      cart.close();
+      window.location.href = '/checkout';
+    }, 1000); // Aumentar el tiempo para ver el estado de carga
+  };
   
   // Inicializar el carrito cuando el componente se monta
   document.addEventListener('DOMContentLoaded', function() {
