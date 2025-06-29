@@ -51,14 +51,17 @@ const categorias = ['Teclados', 'Mouse', 'Monitores', 'Sillas Gamer', 'Auricular
           <i class="fas fa-search"></i>
           <span class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-blue-400 group-hover:w-4/5 group-hover:left-1/10 transition-all duration-300"></span>
         </button>
-        <button class="p-2 hover:text-blue-400 transition-all duration-300 relative group">
-          <a href="/carrito">
+        
+        <!-- Icono del carrito mejorado -->
+        <button onclick="cart.open()" class="p-2 hover:text-blue-400 transition-all duration-300 relative group">
           <i class="fas fa-shopping-cart"></i>
-          </a>
-          
-          <span class="absolute -top-1 -right-1 bg-red-500 text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+          <!-- Contador del carrito -->
+          <span data-cart-count class="absolute -top-1 -right-1 bg-red-500 text-xs rounded-full h-5 w-5 flex items-center justify-center transition-all duration-300 transform scale-0">
+            0
+          </span>
           <span class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-blue-400 group-hover:w-4/5 group-hover:left-1/10 transition-all duration-300"></span>
         </button>
+        
         <!-- Botón hamburguesa (solo móvil) -->
         <button id="menu-toggle" class="md:hidden p-2 hover:text-blue-400 focus:outline-none">
           <i id="menu-icon" class="fas fa-bars"></i>
@@ -99,12 +102,18 @@ const categorias = ['Teclados', 'Mouse', 'Monitores', 'Sillas Gamer', 'Auricular
             <i class="fas fa-envelope text-sm"></i> Contacto
           </a>
         </li>
+        <li>
+          <button onclick="cart.open()" class="w-full px-3 py-2 hover:bg-gray-800 rounded-lg transition-all duration-300 flex items-center gap-2">
+            <i class="fas fa-shopping-cart text-sm"></i> 
+            Carrito (<span data-cart-count>0</span>)
+          </button>
+        </li>
       </ul>
     </div>
   </div>
 </header>
 
-<!-- Script para el menú hamburguesa -->
+<!-- Script para el menú hamburguesa y carrito -->
 <script is:inline>
   document.addEventListener('DOMContentLoaded', function() {
     const menuToggle = document.getElementById('menu-toggle');
@@ -138,13 +147,51 @@ const categorias = ['Teclados', 'Mouse', 'Monitores', 'Sillas Gamer', 'Auricular
         menuIcon.classList.add('fa-bars');
       });
     });
+
+    // Función para actualizar la visibilidad del contador
+    function updateCartBadge() {
+      const badges = document.querySelectorAll('[data-cart-count]');
+      badges.forEach(badge => {
+        const count = parseInt(badge.textContent) || 0;
+        if (count > 0) {
+          badge.classList.remove('scale-0');
+          badge.classList.add('scale-100');
+        } else {
+          badge.classList.remove('scale-100');
+          badge.classList.add('scale-0');
+        }
+      });
+    }
+
+    // Observar cambios en el contador del carrito
+    const observer = new MutationObserver(updateCartBadge);
+    document.querySelectorAll('[data-cart-count]').forEach(element => {
+      observer.observe(element, { childList: true, subtree: true });
+    });
+
+    // Inicializar la visibilidad del contador
+    updateCartBadge();
   });
+</script>
+
+<!-- Importar el script del carrito -->
+<script type="module">
+  import '/scripts/cart.js';
 </script>
 
 <style is:global>
   /* Animación para el icono de flecha */
   .rotate-180 {
     transform: rotate(180deg);
+  }
+  
+  /* Animaciones para el contador del carrito */
+  .scale-0 {
+    transform: scale(0);
+  }
+  
+  .scale-100 {
+    transform: scale(1);
   }
   
   /* Mejorar la experiencia táctil en móviles */

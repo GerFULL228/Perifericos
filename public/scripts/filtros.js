@@ -1,298 +1,258 @@
 document.addEventListener('DOMContentLoaded', function() {
-   const minPrecioCategoria = window.minPrecioCategoria;
-  const maxPrecioCategoria = window.maxPrecioCategoria;
-    // Elementos del modal
-    const openFiltersBtn = document.getElementById('open-filters');
-    const closeFiltersBtn = document.getElementById('close-filters');
-    const filtersModal = document.getElementById('filters-modal');
-    const filtersOverlay = document.getElementById('filters-overlay');
-    
-    // Productos
-    const productCards = document.querySelectorAll('.producto-card');
-    const noProductsMessage = document.getElementById('no-products');
-    const productsContainer = document.querySelector('#productos-container .grid');
-    const productsCount = document.getElementById('products-count');
-    
-    // Abrir modal
-    function openFilters() {
-      filtersModal.classList.remove('-translate-x-full');
-      filtersOverlay.classList.remove('hidden');
-      document.body.style.overflow = 'hidden';
+  // Valores iniciales
+  const minPrecio = window.minPrecioCategoria || 0;
+  const maxPrecio = window.maxPrecioCategoria || 10000;
+  
+  // Elementos del DOM
+  const elements = {
+    modal: {
+      openBtn: document.getElementById('open-filters'),
+      closeBtn: document.getElementById('close-filters'),
+      modal: document.getElementById('filters-modal'),
+      overlay: document.getElementById('filters-overlay')
+    },
+    products: {
+      cards: document.querySelectorAll('.producto-card'),
+      container: document.getElementById('productos-container'),
+      noProductsMsg: document.getElementById('no-products'),
+      count: document.getElementById('products-count')
+    },
+    filters: {
+      resetBtns: [
+        document.getElementById('desktop-reset-filters'),
+        document.getElementById('reset-filters'),
+        document.getElementById('reset-filters-btn')
+      ].filter(Boolean),
+      marca: {
+        all: document.querySelectorAll('.marca-filter'),
+        mobile: document.querySelectorAll('.marca-filter:not([id^="desktop-"])'),
+        desktop: document.querySelectorAll('.marca-filter[id^="desktop-"]')
+      }
     }
-    
-    // Cerrar modal
-    function closeFilters() {
-      filtersModal.classList.add('-translate-x-full');
-      filtersOverlay.classList.add('hidden');
+  };
+
+  // Control del modal
+  const modalControl = {
+    open: () => {
+      elements.modal.modal.classList.remove('-translate-x-full');
+      elements.modal.overlay.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    },
+    close: () => {
+      elements.modal.modal.classList.add('-translate-x-full');
+      elements.modal.overlay.classList.add('hidden');
       document.body.style.overflow = '';
     }
+  };
+
+  // Event listeners para el modal
+  elements.modal.openBtn?.addEventListener('click', modalControl.open);
+  elements.modal.closeBtn?.addEventListener('click', modalControl.close);
+  elements.modal.overlay?.addEventListener('click', modalControl.close);
+
+  // Funciones para el filtrado
+  const filterUtils = {
+    getSelectedMarcas: () => {
+      return Array.from(elements.filters.marca.all)
+        .filter(checkbox => checkbox.checked)
+        .map(checkbox => checkbox.value);
+    },
     
-    // Event listeners para abrir/cerrar modal
-    openFiltersBtn?.addEventListener('click', openFilters);
-    closeFiltersBtn?.addEventListener('click', closeFilters);
-    filtersOverlay?.addEventListener('click', closeFilters);
-    
-    // Función para validar que el precio mínimo no supere el máximo
-    function validatePriceRange(minVal, maxVal, isDesktop = false) {
-      const prefix = isDesktop ? 'desktop-' : '';
-      const minRange = document.getElementById(`${prefix}price-range-min`);
-      const maxRange = document.getElementById(`${prefix}price-range-max`);
-      const minInput = document.getElementById(`${prefix}min-price-input`);
-      const maxInput = document.getElementById(`${prefix}max-price-input`);
+    getPriceRange: () => {
+      const desktopMin = document.getElementById('desktop-min-price-input');
+      const desktopMax = document.getElementById('desktop-max-price-input');
+      const mobileMin = document.getElementById('min-price-input');
+      const mobileMax = document.getElementById('max-price-input');
       
-      // Asegurar que min no sea mayor que max
+      return {
+        min: parseFloat(desktopMin?.value || mobileMin?.value || minPrecio),
+        max: parseFloat(desktopMax?.value || mobileMax?.value || maxPrecio)
+      };
+    },
+    
+    validatePriceRange: (minVal, maxVal, isDesktop = false) => {
       if (minVal > maxVal) {
         if (isDesktop) {
-          minRange.value = maxVal;
-          minInput.value = maxVal;
           minVal = maxVal;
         } else {
-          maxRange.value = minVal;
-          maxInput.value = minVal;
           maxVal = minVal;
         }
       }
-      
       return { min: minVal, max: maxVal };
-    }
+    },
     
-    // Función para actualizar los valores mostrados
-    function updatePriceDisplay(minVal, maxVal, isDesktop = false) {
+    updatePriceDisplay: (minVal, maxVal, isDesktop = false) => {
       const prefix = isDesktop ? 'desktop-' : '';
       const minDisplay = document.getElementById(`${prefix}min-price-value`);
       const maxDisplay = document.getElementById(`${prefix}max-price-value`);
       
       if (minDisplay) minDisplay.textContent = `S/. ${minVal.toFixed(2)}`;
       if (maxDisplay) maxDisplay.textContent = `S/. ${maxVal.toFixed(2)}`;
-    }
+    },
     
-    // Función para sincronizar controles de precio
-    function syncPriceControls(sourcePrefix, targetPrefix) {
-      const sourceMinRange = document.getElementById(`${sourcePrefix}price-range-min`);
-      const sourceMaxRange = document.getElementById(`${sourcePrefix}price-range-max`);
-      const targetMinRange = document.getElementById(`${targetPrefix}price-range-min`);
-      const targetMaxRange = document.getElementById(`${targetPrefix}price-range-max`);
-      const targetMinInput = document.getElementById(`${targetPrefix}min-price-input`);
-      const targetMaxInput = document.getElementById(`${targetPrefix}max-price-input`);
+    syncPriceControls: (sourcePrefix, targetPrefix) => {
+      const controls = ['price-range-min', 'price-range-max', 'min-price-input', 'max-price-input'];
       
-      if (sourceMinRange && targetMinRange) {
-        targetMinRange.value = sourceMinRange.value;
-        targetMinInput.value = sourceMinRange.value;
-      }
-      if (sourceMaxRange && targetMaxRange) {
-        targetMaxRange.value = sourceMaxRange.value;
-        targetMaxInput.value = sourceMaxRange.value;
-      }
-      
-      updatePriceDisplay(
-        parseFloat(sourceMinRange?.value || minPrecioCategoria),
-        parseFloat(sourceMaxRange?.value || maxPrecioCategoria),
-        targetPrefix === 'desktop-'
-      );
-    }
-    
-    // Función para filtrar productos
-    function filterProducts() {
-      // Obtener marcas seleccionadas
-      const selectedMarcas = [];
-      document.querySelectorAll('.marca-filter:checked').forEach(checkbox => {
-        selectedMarcas.push(checkbox.value);
+      controls.forEach(control => {
+        const source = document.getElementById(`${sourcePrefix}${control}`);
+        const target = document.getElementById(`${targetPrefix}${control}`);
+        if (source && target) target.value = source.value;
       });
       
-      // Obtener rango de precios (usar valores de desktop como referencia)
-      const desktopMinInput = document.getElementById('desktop-min-price-input');
-      const desktopMaxInput = document.getElementById('desktop-max-price-input');
-      const mobileMinInput = document.getElementById('min-price-input');
-      const mobileMaxInput = document.getElementById('max-price-input');
-      
-      const minPrice = parseFloat(desktopMinInput?.value || mobileMinInput?.value || minPrecioCategoria);
-      const maxPrice = parseFloat(desktopMaxInput?.value || mobileMaxInput?.value || maxPrecioCategoria);
-      
-      let visibleCount = 0;
-      
-      productCards.forEach(card => {
-        const price = parseFloat(card.getAttribute('data-price'));
-        const marca = card.getAttribute('data-marca');
-        
-        // Verificar si cumple con los filtros
-        const matchesMarca = selectedMarcas.length === 0 || selectedMarcas.includes(marca);
-        const matchesPrice = price >= minPrice && price <= maxPrice;
-        
-        if (matchesMarca && matchesPrice) {
-          card.style.display = 'block';
-          visibleCount++;
-        } else {
-          card.style.display = 'none';
-        }
-      });
-      
-      // Actualizar contador de productos
-      if (productsCount) {
-        productsCount.textContent = `Mostrando ${visibleCount} producto${visibleCount !== 1 ? 's' : ''}`;
-      }
-      
-      // Mostrar/ocultar mensaje de no productos
-      if (visibleCount === 0) {
-        if (productsContainer) productsContainer.style.display = 'none';
-        if (noProductsMessage) noProductsMessage.classList.remove('hidden');
-      } else {
-        if (productsContainer) productsContainer.style.display = 'grid';
-        if (noProductsMessage) noProductsMessage.classList.add('hidden');
-      }
+      const { min, max } = filterUtils.getPriceRange();
+      filterUtils.updatePriceDisplay(min, max, targetPrefix === 'desktop-');
     }
-    
-    // Función para resetear filtros
-    function resetFilters() {
-     
-      // Desmarcar todos los checkboxes
-      document.querySelectorAll('.marca-filter').forEach(checkbox => {
-        checkbox.checked = false;
-      });
-        console.log('→ RESET filtros ejecutado');
-         console.log('minPrecioCategoria:', typeof minPrecioCategoria);
-         console.log('maxPrecioCategoria:', typeof maxPrecioCategoria);
+  };
 
-      // Resetear controles de precio para móvil
-      const mobileMinRange = document.getElementById('price-range-min');
-      const mobileMaxRange = document.getElementById('price-range-max');
-      const mobileMinInput = document.getElementById('min-price-input');
-      const mobileMaxInput = document.getElementById('max-price-input');
+  // Filtrado principal
+  function filterProducts() {
+    const { min, max } = filterUtils.getPriceRange();
+    const selectedMarcas = filterUtils.getSelectedMarcas();
+    
+    let visibleCount = 0;
+    
+    elements.products.cards.forEach(card => {
+      const price = parseFloat(card.dataset.price);
+      const marca = card.dataset.marca;
       
-      if (mobileMinRange) mobileMinRange.value = minPrecioCategoria;
-      if (mobileMaxRange) mobileMaxRange.value = maxPrecioCategoria;
-      if (mobileMinInput) mobileMinInput.value = minPrecioCategoria;
-      if (mobileMaxInput) mobileMaxInput.value = maxPrecioCategoria;
+      const matchesMarca = selectedMarcas.length === 0 || selectedMarcas.includes(marca);
+      const matchesPrice = price >= min && price <= max;
       
-      // Resetear controles de precio para desktop
-      const desktopMinRange = document.getElementById('desktop-price-range-min');
-      const desktopMaxRange = document.getElementById('desktop-price-range-max');
-      const desktopMinInput = document.getElementById('desktop-min-price-input');
-      const desktopMaxInput = document.getElementById('desktop-max-price-input');
+      if (matchesMarca && matchesPrice) {
+        card.style.display = 'block';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+    
+    // Actualizar UI
+    if (elements.products.count) {
+      elements.products.count.textContent = `Mostrando ${visibleCount} producto${visibleCount !== 1 ? 's' : ''}`;
+    }
+    
+    const showNoProducts = visibleCount === 0;
+    if (elements.products.container) {
+      elements.products.container.style.display = showNoProducts ? 'none' : 'grid';
+    }
+    if (elements.products.noProductsMsg) {
+      showNoProducts 
+        ? elements.products.noProductsMsg.classList.remove('hidden')
+        : elements.products.noProductsMsg.classList.add('hidden');
+    }
+  }
+
+  // Resetear filtros
+  function resetFilters() {
+    // Resetear checkboxes
+    elements.filters.marca.all.forEach(checkbox => checkbox.checked = false);
+    
+    // Resetear controles de precio
+    const priceControls = [
+      'price-range-min', 'price-range-max', 'min-price-input', 'max-price-input',
+      'desktop-price-range-min', 'desktop-price-range-max', 'desktop-min-price-input', 'desktop-max-price-input'
+    ];
+    
+    priceControls.forEach(control => {
+      const element = document.getElementById(control);
+      if (!element) return;
       
-      if (desktopMinRange) desktopMinRange.value = minPrecioCategoria;
-      if (desktopMaxRange) desktopMaxRange.value = maxPrecioCategoria;
-      if (desktopMinInput) desktopMinInput.value = minPrecioCategoria;
-      if (desktopMaxInput) desktopMaxInput.value = maxPrecioCategoria;
+      if (control.includes('min')) {
+        element.value = minPrecio;
+      } else {
+        element.value = maxPrecio;
+      }
+    });
+    
+    // Actualizar displays
+    filterUtils.updatePriceDisplay(minPrecio, maxPrecio, false);
+    filterUtils.updatePriceDisplay(minPrecio, maxPrecio, true);
+    
+    // Aplicar filtros
+    filterProducts();
+  }
+
+  // Configurar eventos para controles de precio
+  function setupPriceControls(prefix = '') {
+    const isDesktop = prefix === 'desktop-';
+    const minRange = document.getElementById(`${prefix}price-range-min`);
+    const maxRange = document.getElementById(`${prefix}price-range-max`);
+    const minInput = document.getElementById(`${prefix}min-price-input`);
+    const maxInput = document.getElementById(`${prefix}max-price-input`);
+    
+    const handlePriceChange = () => {
+      const minVal = parseFloat(minRange?.value || minPrecio);
+      const maxVal = parseFloat(maxRange?.value || maxPrecio);
       
-      // Actualizar displays
-      updatePriceDisplay(minPrecioCategoria, maxPrecioCategoria, false);
-      updatePriceDisplay(minPrecioCategoria, maxPrecioCategoria, true);
+      const validated = filterUtils.validatePriceRange(minVal, maxVal, isDesktop);
       
-      // Filtrar productos
+      if (minRange) minRange.value = validated.min;
+      if (maxRange) maxRange.value = validated.max;
+      if (minInput) minInput.value = validated.min;
+      if (maxInput) maxInput.value = validated.max;
+      
+      filterUtils.updatePriceDisplay(validated.min, validated.max, isDesktop);
+      
+      // Sincronizar con el otro conjunto de controles
+      const otherPrefix = isDesktop ? '' : 'desktop-';
+      filterUtils.syncPriceControls(prefix, otherPrefix);
+      
       filterProducts();
+    };
+    
+    if (minRange) minRange.addEventListener('input', handlePriceChange);
+    if (maxRange) maxRange.addEventListener('input', handlePriceChange);
+    
+    if (minInput) {
+      minInput.addEventListener('change', () => {
+        const value = Math.max(minPrecio, parseFloat(minInput.value) || minPrecio);
+        minRange.value = value;
+        handlePriceChange();
+      });
     }
     
-    // Configurar event listeners para filtros automáticos
-    function setupAutoFilters(prefix = '') {
-      // Event listeners para controles de precio
-      const minRange = document.getElementById(`${prefix}price-range-min`);
-      const maxRange = document.getElementById(`${prefix}price-range-max`);
-      const minInput = document.getElementById(`${prefix}min-price-input`);
-      const maxInput = document.getElementById(`${prefix}max-price-input`);
-      
-      if (minRange) {
-        minRange.addEventListener('input', () => {
-          const validated = validatePriceRange(
-            parseFloat(minRange.value),
-            parseFloat(maxRange.value),
-            prefix === 'desktop-'
-          );
-          minInput.value = validated.min;
-          updatePriceDisplay(validated.min, validated.max, prefix === 'desktop-');
-          
-          // Sincronizar con el otro conjunto de controles
-          const otherPrefix = prefix === 'desktop-' ? '' : 'desktop-';
-          syncPriceControls(prefix, otherPrefix);
-          
-          filterProducts();
-        });
-      }
-      
-      if (maxRange) {
-        maxRange.addEventListener('input', () => {
-          const validated = validatePriceRange(
-            parseFloat(minRange.value),
-            parseFloat(maxRange.value),
-            prefix === 'desktop-'
-          );
-          maxInput.value = validated.max;
-          updatePriceDisplay(validated.min, validated.max, prefix === 'desktop-');
-          
-          // Sincronizar con el otro conjunto de controles
-          const otherPrefix = prefix === 'desktop-' ? '' : 'desktop-';
-          syncPriceControls(prefix, otherPrefix);
-          
-          filterProducts();
-        });
-      }
-      
-      if (minInput) {
-        minInput.addEventListener('change', () => {
-          const value = Math.max(minPrecioCategoria, parseFloat(minInput.value) || minPrecioCategoria);
-          const validated = validatePriceRange(value, parseFloat(maxRange.value), prefix === 'desktop-');
-          
-          minRange.value = validated.min;
-          minInput.value = validated.min;
-          updatePriceDisplay(validated.min, validated.max, prefix === 'desktop-');
-          
-          // Sincronizar con el otro conjunto de controles
-          const otherPrefix = prefix === 'desktop-' ? '' : 'desktop-';
-          syncPriceControls(prefix, otherPrefix);
-          
-          filterProducts();
-        });
-      }
-      
-      if (maxInput) {
-        maxInput.addEventListener('change', () => {
-          const value = Math.min(maxPrecioCategoria, parseFloat(maxInput.value) || maxPrecioCategoria);
-          const validated = validatePriceRange(parseFloat(minRange.value), value, prefix === 'desktop-');
-          
-          maxRange.value = validated.max;
-          maxInput.value = validated.max;
-          updatePriceDisplay(validated.min, validated.max, prefix === 'desktop-');
-          
-          // Sincronizar con el otro conjunto de controles
-          const otherPrefix = prefix === 'desktop-' ? '' : 'desktop-';
-          syncPriceControls(prefix, otherPrefix);
-          
-          filterProducts();
-        });
-      }
+    if (maxInput) {
+      maxInput.addEventListener('change', () => {
+        const value = Math.min(maxPrecio, parseFloat(maxInput.value) || maxPrecio);
+        maxRange.value = value;
+        handlePriceChange();
+      });
     }
-    
-    // Configurar eventos para los botones de reset
-    document.getElementById('desktop-reset-filters')?.addEventListener('click', resetFilters);
-    document.getElementById('reset-filters')?.addEventListener('click', resetFilters);
-    document.getElementById('reset-filters-btn')?.addEventListener('click', resetFilters);
-    
-    // Configurar eventos para los checkboxes de marca
-    document.querySelectorAll('.marca-filter').forEach(checkbox => {
+  }
+
+  // Configurar eventos para checkboxes de marca
+  function setupMarcaFilters() {
+    elements.filters.marca.all.forEach(checkbox => {
       checkbox.addEventListener('change', () => {
         // Sincronizar checkboxes entre móvil y desktop
         const id = checkbox.id;
-        let otherId, otherCheckbox;
+        const otherId = id.includes('desktop-') 
+          ? id.replace('desktop-', '') 
+          : 'desktop-' + id;
         
-        if (id.includes('desktop-')) {
-          otherId = id.replace('desktop-', '');
-          otherCheckbox = document.getElementById(otherId);
-        } else {
-          otherId = 'desktop-' + id;
-          otherCheckbox = document.getElementById(otherId);
-        }
-        
-        if (otherCheckbox) {
-          otherCheckbox.checked = checkbox.checked;
-        }
+        const otherCheckbox = document.getElementById(otherId);
+        if (otherCheckbox) otherCheckbox.checked = checkbox.checked;
         
         filterProducts();
       });
     });
-    
-    // Inicializar filtros para ambas vistas
-    setupAutoFilters(); // Móvil
-    setupAutoFilters('desktop-'); // Escritorio
-    
-    // Aplicar filtros iniciales
-    filterProducts();
-  });
+  }
+
+  // Configurar eventos para botones de reset
+  function setupResetButtons() {
+    elements.filters.resetBtns.forEach(btn => {
+      btn.addEventListener('click', resetFilters);
+    });
+  }
+
+  // Inicialización
+  function init() {
+    setupPriceControls(); // Móvil
+    setupPriceControls('desktop-'); // Escritorio
+    setupMarcaFilters();
+    setupResetButtons();
+    filterProducts(); // Aplicar filtros iniciales
+  }
+
+  init();
+});

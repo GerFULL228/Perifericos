@@ -1,5 +1,4 @@
 ---
-// src/pages/checkout.astro
 import '../styles/global.css';
 import CheckoutLayout from '../layouts/CheckoutLayout.astro';
 import CheckoutForm from '../components/forms/CheckoutForm.astro';
@@ -8,9 +7,14 @@ import CartSummary from '../components/cart/CartSummary.astro';
 
 <CheckoutLayout>
   <CheckoutForm slot="form" />
-  
   <div slot="summary">
     <CartSummary />
+    <button 
+      id="confirm-payment-btn"
+      class="bg-purple-500 hover:bg-purple-600 transition-colors rounded-2xl p-2.5 ml-1.5 text-white font-semibold w-full"
+    >
+      Confirmar pago
+    </button>
     <div class="mt-6 p-4 bg-gray-800 rounded-lg">
       <h3 class="text-lg font-semibold text-white mb-4">Información de envío</h3>
       <p class="text-gray-400">Los pedidos se envían en 24-48 horas laborables.</p>
@@ -18,3 +22,162 @@ import CartSummary from '../components/cart/CartSummary.astro';
     </div>
   </div>
 </CheckoutLayout>
+
+<!-- Modal de confirmación -->
+<div id="payment-modal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm hidden items-center justify-center z-50">
+  <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-8 mx-4 max-w-md w-full border border-gray-700 shadow-2xl transform transition-all duration-300 scale-95">
+    <!-- Icono de éxito -->
+    <div class="flex justify-center mb-6">
+      <div class="bg-green-500 rounded-full p-4">
+        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+      </div>
+    </div>
+    
+    <!-- Contenido del modal -->
+    <div class="text-center">
+      <h2 class="text-2xl font-bold text-white mb-4">¡Pago Confirmado!</h2>
+      <p class="text-gray-300 mb-2">Gracias por comprar en nuestra tienda</p>
+      <p class="text-gray-400 text-sm mb-6">Tu pedido llegará pronto. Te notificaremos cuando esté en camino.</p>
+      
+      <!-- Número de pedido ficticio -->
+      <div class="bg-gray-800 rounded-lg p-3 mb-6">
+        <p class="text-gray-400 text-xs">Número de pedido</p>
+        <p class="text-white font-mono text-lg" id="order-number">#ORD-2024-001</p>
+      </div>
+    </div>
+    
+    <!-- Botón de cerrar -->
+    <button 
+      id="close-modal-btn"
+      class="w-full bg-purple-500 hover:bg-purple-600 transition-colors text-white font-semibold py-3 px-6 rounded-2xl"
+    >
+      Continuar comprando
+    </button>
+  </div>
+</div>
+
+<script>
+  // Función para generar número de pedido único
+  function generateOrderNumber() {
+    const timestamp = Date.now();
+    const random = Math.floor(Math.random() * 1000);
+    return `#ORD-${new Date().getFullYear()}-${String(timestamp).slice(-6)}${String(random).padStart(3, '0')}`;
+  }
+
+  // Importar el carrito para poder usar cart.clear()
+  import { cart } from '/public/scripts/cart.js';
+  
+  // Hacer el carrito disponible globalmente si no lo está ya
+  if (!window.cart) {
+    window.cart = cart;
+  }
+
+  // Manejar el click del botón de confirmar pago
+  document.getElementById('confirm-payment-btn')?.addEventListener('click', function(e) {
+    e.preventDefault();
+    
+    // Generar número de pedido
+    const orderNumber = generateOrderNumber();
+    const orderNumberElem = document.getElementById('order-number');
+    if (orderNumberElem) {
+      orderNumberElem.textContent = orderNumber;
+    }
+    
+    // Mostrar el modal con animación
+    const modal = document.getElementById('payment-modal');
+    if (modal) {
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      
+      // Animar la aparición del modal
+      setTimeout(() => {
+        const modalContent = modal.querySelector('div > div');
+        if (modalContent) {
+          modalContent.classList.remove('scale-95');
+          modalContent.classList.add('scale-100');
+        }
+      }, 10);
+    }
+    
+    // Vaciar el carrito usando cart.clear()
+    if (window.cart && typeof window.cart.clear === 'function') {
+      window.cart.clear();
+      // Disparar evento para notificar a otros componentes
+      window.dispatchEvent(new CustomEvent('cartUpdated'));
+    } else {
+      console.warn('El carrito no está disponible');
+    }
+  });
+
+  // Manejar el click del botón de cerrar modal
+  document.getElementById('close-modal-btn')?.addEventListener('click', function() {
+    const modal = document.getElementById('payment-modal');
+    const modalContent = modal.querySelector('div > div');
+    
+    // Animar la salida
+    if (modalContent) {
+      modalContent.classList.remove('scale-100');
+      modalContent.classList.add('scale-95');
+    }
+    
+    setTimeout(() => {
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+      
+      // Redirigir a la página principal o tienda
+      window.location.href = '/'; // Cambia esta ruta según tu estructura
+    }, 300);
+  });
+
+  // Cerrar modal al hacer click fuera de él
+  document.getElementById('payment-modal')?.addEventListener('click', function(e) {
+    if (e.target === this) {
+      const closeBtn = document.getElementById('close-modal-btn');
+      if (closeBtn) {
+        closeBtn.click();
+      }
+    }
+  });
+
+  // Cerrar modal con la tecla Escape
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      const modal = document.getElementById('payment-modal');
+      if (modal && !modal.classList.contains('hidden')) {
+        const closeBtn = document.getElementById('close-modal-btn');
+        if (closeBtn) {
+          closeBtn.click();
+        }
+      }
+    }
+  });
+</script>
+
+<style>
+  /* Asegurar que las animaciones funcionen correctamente */
+  #payment-modal {
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  #payment-modal > div > div {
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  /* Efecto de entrada del modal */
+  #payment-modal.flex {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+</style>

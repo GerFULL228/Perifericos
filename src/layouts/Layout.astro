@@ -2,6 +2,7 @@
 const { title } = Astro.props;
 import Header from '../components/comun/Header.astro';
 import Footer from '../components/comun/Footer.astro';
+import CartDrawer from '../components/cart/CartDrawer.astro';
 ---
 
 <!DOCTYPE html>
@@ -21,10 +22,12 @@ import Footer from '../components/comun/Footer.astro';
   <main class="animate-fade-in">
     <slot />
   </main>
+  <CartDrawer />
   
   <!-- Footer -->
   <Footer />
   
   <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <script type="module" src="/scripts/cart.js?v=1"></script>
 </body>
 </html>

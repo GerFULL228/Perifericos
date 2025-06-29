@@ -2,55 +2,216 @@
 // src/pages/carrito.astro
 import '../styles/global.css';
 import BaseLayout from '../layouts/Layout.astro';
-import CartItem from '../components/cart/CartItem.astro';
-import CartSummary from '../components/cart/CartSummary.astro';
-import { cartItems, cartTotal, cartCount } from '../../public/scripts/cart.js';
+// No importar cart aquí - se maneja en el cliente
 ---
 
-<BaseLayout title="Carrito | TechPeripherals" description="Revisa los productos en tu carrito de compras">
+<BaseLayout title="Carrito | TechPeripherals">
   <div class="container mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold text-white mb-8">Tu carrito</h1>
     
-    {cartCount() > 0 ? (
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div class="lg:col-span-2">
-          <div class="bg-gray-800 rounded-lg p-6">
-            <h2 class="text-xl font-semibold text-white mb-6">Productos ({cartCount()})</h2>
-            
-            <div class="divide-y divide-gray-700">
-              {cartItems().map((item: any) => (
-                <CartItem product={item} />
-              ))}
+    <!-- Contenedor que se actualizará dinámicamente -->
+    <div id="cart-page-content">
+      <!-- Contenido se cargará con JavaScript -->
+      <div class="text-center py-16">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+        <p class="text-gray-400">Cargando carrito...</p>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { cart } from '/scripts/cart.js';
+    
+    // Asegurar que el carrito esté disponible globalmente
+    window.cart = cart;
+    
+    // Función para proceder al checkout
+    window.proceedToCheckout = function() {
+      // Verificar que hay productos en el carrito
+      if (cart.count() === 0) {
+        alert('Tu carrito está vacío. Agrega algunos productos antes de continuar.');
+        return;
+      }
+      
+      // Opcional: Mostrar mensaje de carga
+      const checkoutBtn = document.querySelector('#checkout-btn');
+      if (checkoutBtn) {
+        checkoutBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Redirigiendo...';
+        checkoutBtn.disabled = true;
+      }
+      
+      // Redirigir a la página de checkout
+      setTimeout(() => {
+        window.location.href = '/checkout';
+      }, 500); // Pequeño delay para mostrar el estado de carga
+    };
+    
+    function renderCartPage() {
+      const cartItems = cart.items();
+      const cartPageContent = document.getElementById('cart-page-content');
+      
+      if (!cartPageContent) return;
+      
+      if (cartItems.length === 0) {
+        // Carrito vacío
+        cartPageContent.innerHTML = `
+          <div class="text-center py-16">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            <h2 class="text-2xl font-bold text-white mb-2">Tu carrito está vacío</h2>
+            <p class="text-gray-400 mb-6">Añade algunos productos para continuar</p>
+            <a href="/productos/todos" class="inline-block px-8 py-3 bg-purple-600 hover:bg-purple-700 rounded-md text-white font-bold transition-colors">
+              Ver productos
+            </a>
+          </div>
+        `;
+      } else {
+        // Carrito con productos
+        cartPageContent.innerHTML = `
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2">
+              <div class="bg-gray-800 rounded-lg p-6">
+                <div class="flex items-center justify-between mb-6">
+                  <h2 class="text-xl font-semibold text-white">
+                    Productos (<span data-cart-count>${cart.count()}</span>)
+                  </h2>
+                  <button 
+                    onclick="cart.clear(); renderCartPage();" 
+                    class="text-red-500 hover:text-red-400 text-sm flex items-center gap-1 transition-colors"
+                    title="Vaciar carrito"
+                  >
+                    <i class="fas fa-trash"></i>
+                    Vaciar carrito
+                  </button>
+                </div>
+                <div class="divide-y divide-gray-700" id="cart-items-list">
+                  ${cartItems.map(item => {
+                    const safeId = String(item.id).replace(/['"]/g, '');
+                    const safeName = String(item.name).replace(/['"]/g, '&quot;');
+                    
+                    return `
+                      <div class="flex items-center py-4" data-item-id="${safeId}">
+                        <div class="flex-shrink-0">
+                          <img src="${item.image}" alt="${safeName}" class="w-20 h-20 object-cover rounded-md">
+                        </div>
+                        <div class="ml-4 flex-grow">
+                          <h3 class="text-white font-medium">${safeName}</h3>
+                          <p class="text-gray-400">S/. ${parseFloat(item.price).toFixed(2)}</p>
+                        </div>
+                        <div class="flex items-center">
+                          <div class="flex items-center border border-gray-600 rounded-md">
+                            <button 
+                              onclick="cart.update('${safeId}', ${item.quantity - 1}); renderCartPage();" 
+                              class="px-3 py-1 text-gray-400 hover:text-white transition-colors ${item.quantity <= 1 ? 'opacity-50 cursor-not-allowed' : ''}" 
+                              ${item.quantity <= 1 ? 'disabled' : ''}
+                            >
+                              -
+                            </button>
+                            <span class="px-3 py-1 text-white min-w-[2rem] text-center">${item.quantity}</span>
+                            <button 
+                              onclick="cart.update('${safeId}', ${item.quantity + 1}); renderCartPage();" 
+                              class="px-3 py-1 text-gray-400 hover:text-white transition-colors"
+                            >
+                              +
+                            </button>
+                          </div>
+                          <button 
+                            onclick="cart.remove('${safeId}'); renderCartPage();" 
+                            class="ml-4 text-red-500 hover:text-red-400 transition-colors" 
+                            title="Eliminar producto"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                    `;
+                  }).join('')}
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="bg-gray-800 p-6 rounded-lg sticky top-6">
+                <h3 class="text-xl font-semibold text-white mb-4">Resumen del pedido</h3>
+                <div class="space-y-4">
+                  <div class="flex justify-between">
+                    <span class="text-gray-400">Productos (<span data-cart-count>${cart.count()}</span>)</span>
+                    <span class="text-white" data-cart-total>S/. ${cart.total().toFixed(2)}</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-gray-400">Envío</span>
+                    <span class="text-green-400">Gratis</span>
+                  </div>
+                  <div class="flex justify-between border-t border-gray-700 pt-4">
+                    <span class="text-lg font-semibold text-white">Total</span>
+                    <span class="text-xl font-bold text-purple-400" data-cart-total>S/. ${cart.total().toFixed(2)}</span>
+                  </div>
+                </div>
+                
+                <!-- Botón de checkout -->
+                <button
+                  id="checkout-btn"
+                  onclick="proceedToCheckout()"
+                  class="block w-full mt-6 text-center px-6 py-3 bg-purple-600 hover:bg-purple-700 rounded-md text-white font-bold transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50"
+                >
+                  <i class="fas fa-credit-card mr-2"></i>
+                  Proceder al pago
+                </button>
+                
+                <!-- Enlace para continuar comprando -->
+                <a 
+                  href="/productos/todos" 
+                  class="block w-full mt-3 text-center px-6 py-2 text-purple-400 hover:text-purple-300 transition-colors"
+                >
+                  <i class="fas fa-arrow-left mr-1"></i>
+                  Continuar comprando
+                </a>
+                
+                <!-- Información adicional -->
+                <div class="mt-6 pt-6 border-t border-gray-700">
+                  <div class="flex items-center text-green-400 text-sm mb-2">
+                    <i class="fas fa-shield-alt mr-2"></i>
+                    Compra 100% segura
+                  </div>
+                  <div class="flex items-center text-green-400 text-sm mb-2">
+                    <i class="fas fa-truck mr-2"></i>
+                    Envío gratis en pedidos
+                  </div>
+                  <div class="flex items-center text-green-400 text-sm">
+                    <i class="fas fa-undo mr-2"></i>
+                    30 días de garantía
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        
-        <div>
-          <CartSummary />
-          <a 
-            href="/checkout" 
-            class="block w-full mt-4 text-center px-6 py-3 bg-purple-600 hover:bg-purple-700 rounded-md text-white font-bold transition-colors"
-          >
-            Proceder al pago
-          </a>
-        </div>
-      </div>
-    ) : (
-      <div class="text-center py-16">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-        </svg>
-        <h2 class="text-2xl font-bold text-white mb-2">Tu carrito está vacío</h2>
-        <p class="text-gray-400 mb-6">Añade algunos productos para continuar</p>
-        <a 
-          href="/productos/todos" 
-          class="inline-block px-8 py-3 bg-purple-600 hover:bg-purple-700 rounded-md text-white font-bold transition-colors"
-        >
-          Ver productos
-        </a>
-      </div>
-    )}
-  </div>
-  <script type="module" src="/scripts/cart.js"></script>
-
+        `;
+      }
+    }
+    
+    // Hacer renderCartPage disponible globalmente para los botones onclick
+    window.renderCartPage = renderCartPage;
+    
+    // Inicializar carrito y renderizar página
+    function initCartPage() {
+      if (!window.cartInitialized) {
+        cart.init();
+        window.cartInitialized = true;
+      }
+      
+      renderCartPage();
+      
+      // Escuchar cambios en el carrito
+      window.addEventListener('cartUpdated', renderCartPage);
+    }
+    
+    // Inicializar cuando el DOM esté listo
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initCartPage);
+    } else {
+      initCartPage();
+    }
+  </script>
 </BaseLayout>

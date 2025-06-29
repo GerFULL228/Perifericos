@@ -72,7 +72,7 @@ const maxPrecioCategoria = Math.max(...preciosCategoria);
     <div id="filters-overlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-40"></div>
 
     <!-- Modal de filtros -->
-<aside id="filters-modal" class="fixed left-0 top-0 h-screen w-80 bg-white shadow-xl z-50 transform -translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto">      <div class="flex flex-col h-full">
+      <aside id="filters-modal" class="fixed left-0 top-0 h-screen w-80 bg-white shadow-xl z-50 transform -translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto">    
         <div class="flex justify-between items-center p-6 border-b">
           <h2 class="text-xl font-bold">Filtros</h2>
           <button id="close-filters" class="text-gray-500 hover:text-gray-700">
@@ -203,7 +203,7 @@ const maxPrecioCategoria = Math.max(...preciosCategoria);
               <li>
                 <a 
                   href="/productos/todos" 
-                  class={`block px-4 py-2 rounded-lg transition-colors ${category === 'todos' ? 'bg-blue-100 text-blue-600 font-semibold' : 'hover:bg-gray-100'}`}
+                  class={`block px-4 py-2 rounded-lg transition-colors ${category === 'todos' ? 'bg-blue-100 text-blue-600 font-semibold' : 'hover:bg-gray-2'}`}
                 >
                   Todos los productos
                 </a>
@@ -317,12 +317,18 @@ const maxPrecioCategoria = Math.max(...preciosCategoria);
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {productosFiltrados.map(producto => (
                 <article 
-                  class="producto-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                  class="producto-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group"
                   data-category={producto.category}
                   data-marca={producto.marca}
                   data-price={producto.price}
                 >
-                  <div class="relative overflow-hidden h-48">
+                  <div class="relative  h-48">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 text-center">
+                        
+                        <a class="w-full text-center bg-white text-blue-600 py-2 rounded-lg font-semibold hover:bg-blue-50 transition-colors" href={`/productos/detalle/${producto.id}`}>Ver Detalles</a>
+                         
+                     
+                    </div>
                     <img 
                       src={producto.image}
                       alt={producto.title}
@@ -332,10 +338,14 @@ const maxPrecioCategoria = Math.max(...preciosCategoria);
                     <span class="absolute top-2 left-2 bg-blue-600 text-white text-xs px-2 py-1 rounded-full">
                       {producto.category}
                     </span>
+                    
+
                   </div>
+                  
                   <div class="p-4">
                     <h3 class="text-lg font-semibold mb-2 line-clamp-2">{producto.title}</h3>
                     <p class="text-gray-600 text-sm mb-4 line-clamp-2">{producto.description}</p>
+                    
                     <div class="flex justify-between items-center">
                       <div>
                         <span class="text-xl font-bold text-blue-600">S/. {producto.price.toFixed(2)}</span>
@@ -344,7 +354,7 @@ const maxPrecioCategoria = Math.max(...preciosCategoria);
                         )}
                       </div>
                       <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                        <i class="fas fa-cart-plus mr-1"></i> Agregar
+                        <i class="fas fa-cart-plus mr-1"></i> Añadir al carrito
                       </button>
                     </div>
                   </div>

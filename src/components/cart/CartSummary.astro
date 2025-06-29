@@ -1,7 +1,6 @@
 ---
 // src/components/cart/CartSummary.astro
-
-import { cartTotal, cartCount } from '../../../public/scripts/cart';
+import { cart } from '../../../public/scripts/cart';
 ---
 
 <div class="bg-gray-800 p-6 rounded-lg">
@@ -9,8 +8,8 @@ import { cartTotal, cartCount } from '../../../public/scripts/cart';
   
   <div class="space-y-4">
     <div class="flex justify-between">
-      <span class="text-gray-400">Productos ({cartCount()})</span>
-      <span class="text-white">{cartTotal()} €</span>
+      <span class="text-gray-400">Productos (<span data-cart-count>{cart.count()}</span>)</span>
+      <span class="text-white" data-cart-total>{cart.total().toFixed(2)} €</span>
     </div>
     
     <div class="flex justify-between border-t border-gray-700 pt-4">
@@ -20,9 +19,7 @@ import { cartTotal, cartCount } from '../../../public/scripts/cart';
     
     <div class="flex justify-between border-t border-gray-700 pt-4">
       <span class="text-lg font-semibold text-white">Total</span>
-      <span class="text-xl font-bold text-purple-400">{cartTotal()} €</span>
+      <span class="text-xl font-bold text-purple-400" data-cart-total>{cart.total().toFixed(2)} €</span>
     </div>
   </div>
-  
-  
 </div>

@@ -4,13 +4,10 @@ import BaseLayout from './Layout.astro';
 // Make sure that BaseLayout.astro exists in the same directory as this file.
 // If it does not, update the path below to the correct location, for example:
 // import BaseLayout from '../components/BaseLayout.astro';
-import { cartCount } from '../../public/scripts/cart.js';
+
 import Layout from './Layout.astro';
 
-// Redirigir si el carrito está vacío
-if (import.meta.env.PROD && cartCount() === 0) {
-  return Response.redirect(new URL('/productos', Astro.request.url), 302);
-}
+
 ---
 
 <Layout title="Finalizar compra | TechPeripherals" description="Completa tu pedido en TechPeripherals">
