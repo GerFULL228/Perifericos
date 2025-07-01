@@ -16,7 +16,7 @@
     "price": 124.90,
     "description": "SSD NVMe PCIe Gen4 de 1TB con velocidades hasta 7300/6300 MB/s. Ideal para gaming y creación de contenido, disipador térmico incluido.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img2.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img2.png",
     "marca": "WD",
     "modelo": "WDS100T2X0E",
     "garantia": "5 años"
@@ -27,7 +27,7 @@
     "price": 304.50,
     "description": "HDD 4TB para NAS 7200 RPM, 64MB cache, optimizado para hasta 8 bahías. Tecnología AgileArray para cargas de trabajo 24/7.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img3.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img3.png",
     "marca": "Seagate",
     "modelo": "ST4000VN006",
     "garantia": "3 años"
@@ -38,7 +38,7 @@
     "price": 120.00,
     "description": "SSD PCIe 4.0 NVMe con velocidades hasta 7000/6000 MB/s. Controlador Phison E18 y memoria 3D TLC NAND para máximo rendimiento.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img4.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img4.png",
     "marca": "Kingston",
     "modelo": "SKC3000D/2048G",
     "garantia": "5 años"
@@ -49,7 +49,7 @@
     "price": 189.90,
     "description": "SSD SATA de 500GB con velocidades hasta 560/510 MB/s. Tecnología 3D NAND, cifrado AES de 256-bit, resistencia de 360TBW.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img5.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img5.png",
     "marca": "Crucial",
     "modelo": "CT500MX500SSD1",
     "garantia": "5 años"
@@ -60,7 +60,7 @@
     "price": 89.60,
     "description": "SSD portátil resistente a agua, polvo y caídas. USB 3.2 Gen2, velocidades hasta 1050MB/s, protección con contraseña.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img6.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img6.png",
     "marca": "Samsung",
     "modelo": "MU-PE1T0S/WW",
     "garantia": "3 años"
@@ -71,7 +71,7 @@
     "price": 1299.00,
     "description": "HDD para NAS de 6TB, 5400 RPM, tecnología CMR. Optimizado para sistemas NAS de 1-8 bahías, 180TB/año tasa de trabajo.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img7.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img7.png",
     "marca": "WD",
     "modelo": "WD60EFZX",
     "garantia": "3 años"
@@ -82,7 +82,7 @@
     "price": 59.30,
     "description": "USB 3.2 Gen2 flash drive con velocidades hasta 1000MB/s. Diseño metálico resistente, compatible con USB Type-A y Type-C.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img8.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img8.png",
     "marca": "Kingston",
     "modelo": "DTMAXA/1TB",
     "garantia": "5 años"
@@ -93,7 +93,7 @@
     "price": 145.00,
     "description": "SSD NVMe PCIe Gen4 de 2TB con velocidades hasta 7300/6900 MB/s. Optimizado para PS5, resistencia de 2550TBW.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img9.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img9.png",
     "marca": "Seagate",
     "modelo": "ZP2000GM30023",
     "garantia": "5 años"
@@ -115,7 +115,7 @@
     "price": 799.00,
     "description": "SSD NVMe PCIe 4.0 de 500GB con velocidades hasta 6900/5000 MB/s. Ideal para gaming y aplicaciones profesionales.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img11.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img11.png",
     "marca": "Samsung",
     "modelo": "MZ-V8P500BW",
     "garantia": "5 años"
@@ -126,7 +126,7 @@
     "price": 899.00,
     "description": "SSD NVMe PCIe 3.0 de 1TB con velocidades hasta 3500/3000 MB/s. Sin necesidad de disipador, bajo consumo.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img12.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img12.png",
     "marca": "WD",
     "modelo": "WDS100T3B0C",
     "garantia": "5 años"
@@ -137,7 +137,7 @@
     "price": 159.00,
     "description": "SSD NVMe PCIe 3.0 de 2TB con velocidades hasta 2100/1700 MB/s. Factor de forma M.2 2280, tecnología QLC NAND.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img13.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img13.png",
     "marca": "Kingston",
     "modelo": "SNVS/2000G",
     "garantia": "3 años"
@@ -148,7 +148,7 @@
     "price": 350.00,
     "description": "Disco duro externo de 5TB, USB 3.0. Compatible con PC y Mac, formato NTFS preinstalado, plug-and-play.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img14.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img14.png",
     "marca": "Seagate",
     "modelo": "STEB5000100",
     "garantia": "2 años"
@@ -159,7 +159,7 @@
     "price": 1500.00,
     "description": "SSD portátil USB 3.2 de 2TB con velocidades hasta 1050MB/s. Resistente a caídas de hasta 2 metros, compatible con PC/Mac/Android.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img15.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img15.png",
     "marca": "Crucial",
     "modelo": "CT2000X8SSD9",
     "garantia": "3 años"
@@ -170,7 +170,7 @@
     "price": 1200.00,
     "description": "SSD PCIe 4.0 NVMe de última generación con velocidades hasta 7450/6900 MB/s. Tecnología V-NAND TLC, optimizado para gaming.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img16.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img16.png",
     "marca": "Samsung",
     "modelo": "MZ-V9P2T0BW",
     "garantia": "5 años"
@@ -181,7 +181,7 @@
     "price": 1899.00,
     "description": "HDD de 8TB optimizado para sistemas de vigilancia. Tecnología AllFrame 4K, diseñado para cargas de trabajo 24/7.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img17.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img17.png",
     "marca": "WD",
     "modelo": "WD82PURZ",
     "garantia": "3 años"
@@ -192,7 +192,7 @@
     "price": 399.00,
     "description": "SSD SATA III de 480GB con velocidades hasta 500/450 MB/s. Ideal para actualizar discos mecánicos, sin necesidad de drivers.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img18.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img18.png",
     "marca": "Kingston",
     "modelo": "SA400S37/480G",
     "garantia": "3 años"
@@ -203,7 +203,7 @@
     "price": 599.00,
     "description": "HDD interno de 2TB, 7200 RPM, caché 256MB. Tecnología Multi-Tier Caching para mayor rendimiento.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img19.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img19.png",
     "marca": "Seagate",
     "modelo": "ST2000DM008",
     "garantia": "2 años"
@@ -214,7 +214,7 @@
     "price": 699.00,
     "description": "SSD SATA III de 1TB con velocidades hasta 540/500 MB/s. Tecnología 3D NAND, compatible con la mayoría de ordenadores.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img20.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img20.png",
     "marca": "Crucial",
     "modelo": "CT1000BX500SSD1",
     "garantia": "3 años"
@@ -225,7 +225,7 @@
     "price": 1999.00,
     "description": "SSD portátil USB 3.1 de 2TB con velocidades hasta 540MB/s. Cifrado AES de 256-bit, diseño compacto y resistente.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img21.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img21.png",
     "marca": "Samsung",
     "modelo": "MU-PA2T0B/WW",
     "garantia": "3 años"
@@ -236,7 +236,7 @@
     "price": 2499.00,
     "description": "HDD empresarial de 10TB, 7200 RPM, caché 256MB. Diseñado para centros de datos y servidores 24/7.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img22.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img22.png",
     "marca": "WD",
     "modelo": "WD102KRYZ",
     "garantia": "5 años"
@@ -247,7 +247,7 @@
     "price": 1499.00,
     "description": "SSD PCIe 4.0 NVMe de alto rendimiento con velocidades hasta 7300/6000 MB/s. Optimizado para gaming y creativos.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img23.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img23.png",
     "marca": "Kingston",
     "modelo": "SFYRD/1000G",
     "garantia": "5 años"
@@ -258,7 +258,7 @@
     "price": 1099.00,
     "description": "Disco duro externo de 4TB con conexión USB 3.0. Diseño elegante, respaldo automático incluido, compatible con PC/Mac.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img24.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img24.png",
     "marca": "Seagate",
     "modelo": "STKY4000400",
     "garantia": "2 años"
@@ -269,7 +269,7 @@
     "price": 599.00,
     "description": "SSD NVMe PCIe 3.0 de 500GB con velocidades hasta 3500/3000 MB/s. Tecnología QLC NAND, bajo consumo energético.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img25.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img25.png",
     "marca": "Crucial",
     "modelo": "CT500P3SSD8",
     "garantia": "5 años"
@@ -280,7 +280,7 @@
     "price": 1799.00,
     "description": "SSD SATA III de 2TB con velocidades hasta 550/520 MB/s. Tecnología V-NAND 3bit MLC, resistencia de 1200TBW.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img26.png26",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img26.png",
     "marca": "Samsung",
     "modelo": "MZ-76E2T0BW",
     "garantia": "5 años"
@@ -291,7 +291,7 @@
     "price": 2199.00,
     "description": "Disco duro externo de 12TB USB 3.0. Formateado para Windows, compatible con Mac después de reformateo.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img27.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img27.png",
     "marca": "WD",
     "modelo": "WDBWLG0120HBK-NESN",
     "garantia": "2 años"
@@ -302,7 +302,7 @@
     "price": 1299.00,
     "description": "SSD portátil USB 3.2 Gen 2x2 de 1TB con velocidades hasta 2000MB/s. Resistente IP55 agua y polvo.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img28.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img28.png",
     "marca": "Kingston",
     "modelo": "XS2000/1000G",
     "garantia": "3 años"
@@ -313,7 +313,7 @@
     "price": 3499.00,
     "description": "HDD para vigilancia IA de 16TB, 7200 RPM. Optimizado para análisis de vídeo con IA, hasta 64 cámaras HD.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img29.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img29.png",
     "marca": "Seagate",
     "modelo": "ST16000VE001",
     "garantia": "3 años"
@@ -324,7 +324,7 @@
     "price": 899.00,
     "description": "SSD NVMe PCIe 3.0 de 1TB con velocidades hasta 2400/1900 MB/s. Tecnología 3D NAND QLC, bajo consumo.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img30.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img30.png",
     "marca": "Crucial",
     "modelo": "CT1000P2SSD8",
     "garantia": "5 años"
@@ -335,7 +335,7 @@
     "price": 699.00,
     "description": "SSD NVMe PCIe 3.0 de 500GB con velocidades hasta 3500/3000 MB/s. Sin DRAM, tecnología HMB para mejor rendimiento.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img31.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img31.png",
     "marca": "Samsung",
     "modelo": "MZ-V8V500BW",
     "garantia": "5 años"
@@ -346,7 +346,7 @@
     "price": 1499.00,
     "description": "Disco duro externo para gaming de 5TB USB 3.2. Diseño resistente, compatible con PC, Xbox y PS4.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img32.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img32.png",
     "marca": "WD",
     "modelo": "WDBA3A0050BBK-WESN",
     "garantia": "3 años"
@@ -357,7 +357,7 @@
     "price": 599.00,
     "description": "SSD SATA III de 512GB con velocidades hasta 550/520 MB/s. Cifrado AES de 256-bit, resistencia de 300TBW.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img33.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img33.png",
     "marca": "Kingston",
     "modelo": "SKC600/512G",
     "garantia": "5 años"
@@ -368,7 +368,7 @@
     "price": 4299.00,
     "description": "HDD empresarial de 18TB, 7200 RPM, caché 256MB. Optimizado para centros de datos y almacenamiento en la nube.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img34.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img34.png",
     "marca": "Seagate",
     "modelo": "ST18000NM000J",
     "garantia": "5 años"
