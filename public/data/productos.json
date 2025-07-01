@@ -5,7 +5,7 @@
     "price": 150.60,
     "description": "SSD SATA III de 1TB con velocidades de lectura/escritura hasta 560/530 MB/s. Tecnología V-NAND 3bit MLC, cifrado AES de 256 bits, garantía de 5 años.",
     "category": "Almacenamiento",
-    "image": "/public/imagenes/img1.png",
+    "image": "https://perifericos-tienda-online.netlify.app/imagenes/img1.png",
     "marca": "Samsung",
     "modelo": "MZ-77E1T0BW",
     "garantia": "5 años"
